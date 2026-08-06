@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>awdd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0c14;
+    --ink-2:#11142099;
+    --pink:#ff4fd8;
+    --cyan:#4fe3ff;
+    --gold:#ffd24f;
+    --violet:#8b5cf6;
+    --mist:#c8cbe0;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html,body{
+    height:100%;
+    background:var(--ink);
+    overflow:hidden;
+    font-family:'Cairo',sans-serif;
+  }
+
+  body{
+    position:relative;
+  }
+
+  /* ---------- ambient background ---------- */
+  .bg-glow{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:
+      radial-gradient(circle at 20% 25%, rgba(255,79,216,0.16), transparent 45%),
+      radial-gradient(circle at 80% 20%, rgba(79,227,255,0.14), transparent 45%),
+      radial-gradient(circle at 50% 85%, rgba(139,92,246,0.18), transparent 50%);
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift{
+    0%{ filter:hue-rotate(0deg); transform:scale(1); }
+    100%{ filter:hue-rotate(25deg); transform:scale(1.08); }
+  }
+
+  .grain{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- intro stage ---------- */
+  .intro{
+    position:fixed;
+    inset:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--ink);
+    animation: hold-intro 3.6s forwards;
+  }
+
+  @keyframes hold-intro{
+    0%, 88%{ opacity:1; visibility:visible; }
+    100%{ opacity:0; visibility:hidden; pointer-events:none; }
+  }
+
+  .logo-wrap{
+    display:flex;
+    gap:0.06em;
+    perspective:600px;
+  }
+
+  .logo-wrap .letter{
+    font-family:'Great Vibes', cursive;
+    font-size:min(24vw, 220px);
+    line-height:1;
+    display:inline-block;
+    opacity:0;
+    transform:translateY(60px) rotateX(40deg) scale(0.6);
+    background:linear-gradient(120deg, var(--pink), var(--gold), var(--cyan), var(--violet));
+    background-size:300% 300%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    filter:drop-shadow(0 0 22px rgba(255,79,216,0.35));
+    animation:
+      letter-in 0.9s cubic-bezier(.2,.9,.25,1.2) forwards,
+      shimmer 3.2s ease-in-out infinite;
+  }
+
+  .logo-wrap .letter:nth-child(1){ animation-delay: 0.05s, 0.9s; }
+  .logo-wrap .letter:nth-child(2){ animation-delay: 0.22s, 1.05s; }
+  .logo-wrap .letter:nth-child(3){ animation-delay: 0.39s, 1.2s; }
+  .logo-wrap .letter:nth-child(4){ animation-delay: 0.56s, 1.35s; }
+
+  @keyframes letter-in{
+    to{ opacity:1; transform:translateY(0) rotateX(0) scale(1); }
+  }
+
+  @keyframes shimmer{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+  }
+
+  .intro-underline{
+    position:absolute;
+    bottom:33%;
+    width:0;
+    height:2px;
+    background:linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent);
+    animation: line-grow 1.4s ease forwards 1.15s, line-fade 0.6s ease forwards 2.6s;
+  }
+
+  @keyframes line-grow{ to{ width:min(50vw, 420px); } }
+  @keyframes line-fade{ to{ opacity:0; } }
+
+  /* ---------- main stage ---------- */
+  .stage{
+    position:relative;
+    z-index:2;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px;
+    opacity:0;
+    animation: reveal-stage 1s ease forwards 3.3s;
+  }
+
+  @keyframes reveal-stage{ to{ opacity:1; } }
+
+  .brand-mini{
+    font-family:'Great Vibes', cursive;
+    font-size:clamp(2.2rem, 6vw, 3.4rem);
+    background:linear-gradient(120deg, var(--pink), var(--gold), var(--cyan));
+    background-size:200% 200%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation: shimmer 5s ease-in-out infinite;
+    margin-bottom:28px;
+  }
+
+  .empty-mark{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    border:1.5px dashed var(--mist);
+    opacity:0.55;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    animation: spin-slow 18s linear infinite;
+  }
+
+  .empty-mark::after{
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 12px 2px var(--cyan);
+  }
+
+  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
+
+  h1.headline{
+    font-weight:800;
+    font-size:clamp(1.6rem, 4.5vw, 2.6rem);
+    color:#f2f3fb;
+    letter-spacing:0.01em;
+    margin-bottom:12px;
+  }
+
+  h1.headline .accent{
+    background:linear-gradient(120deg, var(--pink), var(--violet));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  p.sub{
+    color:var(--mist);
+    font-weight:300;
+    font-size:clamp(0.95rem, 2vw, 1.05rem);
+    max-width:420px;
+    line-height:1.9;
+  }
+
+  .footer-tag{
+    position:absolute;
+    bottom:26px;
+    font-size:0.8rem;
+    color:#6c7090;
+    letter-spacing:0.08em;
+    font-weight:300;
+  }
+
+  .footer-tag span{
+    color:var(--gold);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="grain"></div>
+
+  <!-- Intro animation -->
+  <div class="intro" aria-hidden="true">
+    <div class="logo-wrap">
+      <span class="letter">a</span><span class="letter">w</span><span class="letter">d</span><span class="letter">d</span>
+    </div>
+    <div class="intro-underline"></div>
+  </div>
+
+  <!-- Main content -->
+  <main class="stage">
+    <div class="brand-mini">awdd</div>
+    <div class="empty-mark"></div>
+    <h1 class="headline">لا يوجد شيء هنا <span class="accent">حالياً</span> 🙂</h1>
+    <p class="sub">الصفحة لا تزال فارغة، لكنها جاهزة لاستقبال أفكارك في أي وقت.</p>
+  </main>
+
+  <div class="footer-tag">awdd <span>•</span> 2026</div>
+
+</body>
+</html>
